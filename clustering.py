@@ -8,7 +8,7 @@ import colorsys
 
 # Carga el conjunto de datos de clustering en 2D
 sc = SparkContext(appName="KMeans")
-text = sc.textFile("home\pruebacaso1.txt")
+text = sc.textFile("home\kmeans.txt")
 data = text.map(lambda l : l.strip().split('\t'))
 
 # Entrenamos el modelo de clustering
@@ -26,8 +26,8 @@ def ccolor (cluster):
 # Dibujo de la gráfica
 fig, ax = plt.subplots()
 fig.canvas.draw()
-ax.set_xlabel('Ingresos')
-ax.set_ylabel('Edad')
+ax.set_xlabel('Edad')
+ax.set_ylabel('Ingresos')
 	
 for (x, y) in data.collect():
     cluster = clusters.predict([x,y])
@@ -41,5 +41,4 @@ for i in range(0, len(clusters.centers)):
 
 plt.show()
 plt.legend()	    
-plt.xlabel('Edad')
-plt.ylabel('Ingresos')	
+
