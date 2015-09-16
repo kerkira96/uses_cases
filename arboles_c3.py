@@ -12,22 +12,22 @@ data = (text.map(lambda l : l.split('\t'))
             .map(lambda v : [ int(x.replace("A", "")) for x in v ])
             .map(lambda (a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, c) : (a1, a2-1, a3-1, a4-1, a5-1, a6, a7-1, a8-1, a9-1, a10, a11-1, a12, a13, a14, a15, a16-1, c-1))
             .map(lambda v : LabeledPoint(v[-1], v[:-1])))
-print("aqui")
+
 
 # Divide los datos en un conjunto de entrenamiento y test (70% - 30% respectivamente)
 (trainData, testData) = data.randomSplit([0.7, 0.3])
-print("aqui2")
+
 # Entrena el modelo con el árbol de decisión.
 model = DecisionTree.trainClassifier(
             trainData, numClasses=2, categoricalFeaturesInfo={1:12, 2:3, 3:4, 4:2, 6:2, 7:2, 8:3, 10:12, 15:4},
             impurity='entropy', maxDepth=3)			
 			
-print("aqui3")
+
 # Evaluamos el modelo para saber el porcentaje de aciertos.
 predictions = model.predict(testData.map(lambda lp : lp.features))
-print("aqui4")
+
 results = testData.map(lambda lp : lp.label).zip(predictions)
-print("aqui5")
+
 acc = (results.filter(lambda (v, p): v == p)
               .count()) / float(testData.count())
 print('% Aciertos: ' + str(acc * 100))
