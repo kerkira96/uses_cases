@@ -5,7 +5,7 @@ from pyspark.mllib.regression import LabeledPoint
 from pyspark.mllib.tree import DecisionTree, DecisionTreeModel
 from pyspark import SparkContext
 
-# Carga el conjunto de datos "Breast Cancer Wisconsin (Diagnostic)"
+# Carga el conjunto de datos 
 sc = SparkContext(appName="trees2")
 text = sc.textFile("home\credito2.data")
 data = (text.map(lambda l : l.split('\t'))
@@ -23,14 +23,14 @@ model = DecisionTree.trainClassifier(
             impurity='entropy', maxDepth=3)			
 			
 
-# Evaluamos el modelo para saber el porcentaje de aciertos.
+# Evalua el modelo para saber el porcentaje de aciertos.
 predictions = model.predict(testData.map(lambda lp : lp.features))
 results = testData.map(lambda lp : lp.label).zip(predictions)
 acc = (results.filter(lambda (v, p): v == p)
               .count()) / float(testData.count())
 print('% Aciertos: ' + str(acc * 100))
 
-# También podemos calcular otras métricas
+# Calcula otras métricas
 tp = results.filter(lambda (v, p): v == 1 and p == 1).count()
 tn = results.filter(lambda (v, p): v == 0 and p == 0).count()
 fp = results.filter(lambda (v, p): v == 0 and p == 1).count()
@@ -42,5 +42,5 @@ f1 = 2 * precision * recall / (precision + recall)
 print('Precision: {:f}\nRecall: {:f}\nF1: {:f}'.format(precision, recall, f1))
 
 
-# Imprimimos el árbol de decisión.
+# Imprime el árbol de decisión.
 print(model.toDebugString())
