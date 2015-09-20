@@ -21,9 +21,9 @@ schemaPeople = sqlContext.createDataFrame(people, schema)
 schemaPeople.registerTempTable("casoSQL")
 
 # Ejecutar la consulta sobre la tabla creada "casoSQL"
-results = sqlContext.sql("SELECT ciudad, avg(edad) as media FROM casoSQL where canal = '1' group by ciudad order by media desc")
+results = sqlContext.sql("SELECT ciudad, avg(edad) as media, count(*) as personas FROM casoSQL where canal = '1' group by ciudad order by media desc")
 
 # Imprimir los resultados
-ciudades = results.map(lambda p: (p[0], p[1])) 				  
+ciudades = results.map(lambda p: (p[0], p[1], p[2])) 				  
 for ciudad in ciudades.collect():
-	print('Ciudad y edad media: ' + str(ciudad))
+	print('Ciudad, edad media, numero de personas: ' + str(ciudad))
